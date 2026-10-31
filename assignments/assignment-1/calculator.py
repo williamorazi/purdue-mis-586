@@ -21,20 +21,22 @@ def basic_operation(operation):
     print("The " + operation + " operation is not built yet.")
 
 
-# Menu for the basic calculator. The user types an operation symbol,
-# or 0 to go back to the main menu.
+# Menu for the basic calculator.  A user can select one of six menu options,
+# or return to the main menu.
 def basic_calculator_menu():
     operation = ""
     while operation != "0":
         print()
-        print("--- Basic Calculator ---")
+        print("======= Basic Calculator =======")
         print("  +    Addition")
         print("  -    Subtraction")
         print("  *    Multiplication")
         print("  /    Division")
-        print("  mod  Modulus (remainder)")
-        print("  ^    Exponentiation (power)")
-        print("  0    Back to main menu")
+        print("  mod  Modulus")
+        print("  ^    Exponentiation")
+        print("  0    Back to Main Menu")
+        print("=================================")
+        print()
         operation = input("Enter an operation symbol: ")
 
         # True when the user typed one of the six supported symbols
@@ -103,14 +105,16 @@ def shapes_menu():
     choice = ""
     while choice != "0":
         print()
-        print("--- Shapes: Area and Volume ---")
-        print("  1. Triangle (area)")
-        print("  2. Rectangle (area)")
-        print("  3. Circle (area)")
-        print("  4. Cube (volume)")
-        print("  5. Cylinder (volume)")
-        print("  6. Cone (volume)")
-        print("  0. Back to engineering menu")
+        print("======= Shapes: Area and Volume =======")
+        print("  1. Triangle (Area)")
+        print("  2. Rectangle (Area)")
+        print("  3. Circle (Area)")
+        print("  4. Cube (Volume)")
+        print("  5. Cylinder (Volume)")
+        print("  6. Cone (Volume)")
+        print("  0. Back to Engineering Menu")
+        print("=========================================")
+        print()
         choice = input("Enter your choice: ")
  
         if choice == "1":
@@ -135,10 +139,12 @@ def unit_conversion_menu():
     choice = ""
     while choice != "0":
         print()
-        print("--- Unit Conversions ---")
-        print("  1. Meters to feet")
-        print("  2. Kilograms to pounds")
-        print("  0. Back to engineering menu")
+        print("======= Unit Conversions =======")
+        print("  1. Meters to Feet")
+        print("  2. Kilograms to Pounds")
+        print("  0. Back to Engineering Menu")
+        print("=================================")
+        print()
         choice = input("Enter your choice: ")
  
         if choice == "1":
@@ -154,10 +160,12 @@ def engineering_menu():
     choice = ""
     while choice != "0":
         print()
-        print("--- Engineering Calculations ---")
-        print("  1. Area and volume of shapes")
-        print("  2. Unit conversions")
-        print("  0. Back to main menu")
+        print("==== Engineering Calculations ====")
+        print("  1. Area and Volume of Shapes")
+        print("  2. Unit Conversions")
+        print("  0. Back to Main Menu")
+        print("==================================")
+        print()
         choice = input("Enter your choice: ")
  
         if choice == "1":
@@ -189,10 +197,12 @@ def business_menu():
     choice = ""
     while choice != "0":
         print()
-        print("--- Business Calculations ---")
+        print("===== Business Calculations =====")
         print("  1. Compound interest")
-        print("  2. Break-even point")
-        print("  0. Back to main menu")
+        print("  2. Break-Even Point")
+        print("  0. Back to Main Menu")
+        print("=================================")
+        print()
         choice = input("Enter your choice: ")
  
         if choice == "1":
@@ -200,6 +210,7 @@ def business_menu():
         elif choice == "2":
             break_even_point()
         elif choice != "0":
+            print()
             print("Invalid choice. Please enter 0, 1, or 2.")
 
 # ===========================================================================
@@ -207,16 +218,21 @@ def business_menu():
 # ===========================================================================
 
 def main_menu():
-    print("Welcome to the Engineering and Business Calculator!")
     choice = ""
     while choice != "0":
         print()
-        print("===== Main Menu =====")
+        print("=========== Main Menu ===========")
         print("  1. Basic Calculator")
         print("  2. Engineering Calculations")
         print("  3. Business Calculations")
         print("  0. Exit")
-        choice = input("Enter your choice: ")
+        print("=================================")
+        print()
+
+        # Capture the user's choice and determine appropriate calculator
+        # menu to display.  If the user enters an invalid choice, display
+        # an error message and prompt for a new choice.
+        choice = input("Enter a calculator option to begin: ")
  
         if choice == "1":
             basic_calculator_menu()
@@ -225,10 +241,11 @@ def main_menu():
         elif choice == "3":
             business_menu()
         elif choice == "0":
+            print()
             print("Thanks for using the calculator. Goodbye!")
         else:
+            print()
             print("Invalid choice. Please enter 0, 1, 2, or 3.")
- 
- 
-# Start the calculator program
+
+# Start the calculator program.
 main_menu()
