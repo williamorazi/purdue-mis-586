@@ -69,7 +69,7 @@ def basic_calculator_menu():
 # SECTION 2: ENGINEERING CALCULATIONS
 # ===========================================================================
 
-# ---- 2a. Shape placeholders (area for 2D shapes, volume for 3D) ----
+# ---- 2a. Shape Area/Volume ----
 
 # Later: prompt for base and height, then display the triangle's area.
 def triangle_area():
@@ -101,19 +101,55 @@ def cone_volume():
     print("Cone volume is not built yet.")
 
 
-# ---- 2b. Unit conversion placeholders ----
+# ---- 2b. Unit Conversions ----
 
-# Later: prompt for a value in meters, then display it in feet.
+# Prompts the user for a length in meters, converts it to feet, and displays
+# the result rounded to two decimal places.
 def meters_to_feet():
-    print("Meters to feet is not built yet.")
+    feet_per_meter = 3.28084
+    done = False
+
+    while not done:
+        print()
+        entry = input("Enter a length in meters, or type 'exit' to return to the menu: ")
+
+        if entry == "exit":
+            done = True
+        else:
+            try:
+                meters = float(entry)
+                feet = meters * feet_per_meter
+                print()
+                print(str(meters) + " meter(s) is equal to " + str(round(feet, 2)) + " feet.")
+            except ValueError:
+                print()
+                print("Invalid input. Please enter a number.")
 
 
-# Later: prompt for a value in kilograms, then display it in pounds.
+# Prompts the user for a length in meters, converts it to feet, and displays
+# the result rounded to two decimal places.
 def kilograms_to_pounds():
-    print("Kilograms to pounds is not built yet.")
+    pounds_per_kilogram = 2.20462
+    done = False
+
+    while not done:
+        print()
+        entry = input("Enter a weight in kilograms, or type 'exit' to return to the menu: ")
+
+        if entry == "exit":
+            done = True
+        else:
+            try:
+                kilograms = float(entry)
+                pounds = kilograms * pounds_per_kilogram
+                print()
+                print(str(kilograms) + " kilogram(s) is equal to " + str(round(pounds, 2)) + " pound(s).")
+            except ValueError:
+                print()
+                print("Invalid input. Please enter a number.")
 
 
-# ---- 2c. Engineering menus ----
+# ---- 2c. Engineering Menus ----
 
 # Menu for choosing a shape. 2D shapes give area, 3D shapes give volume.
 def shapes_menu():
