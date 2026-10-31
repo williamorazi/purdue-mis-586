@@ -16,6 +16,7 @@
 # William Orazi:
 #   1. Implemented program scaffolding, including the menu and sub-menus for
 #      each calculator type (basic, engineering, and business).
+#   2. Implemented unit conversion functions for engineering calculations.
 #
 # Preston Nicol:
 #   1. Work Item
