@@ -5,7 +5,7 @@
 # Student(s):   William Orazi, Preston Nicol
 # Instructor:   Dr. Shoaib Khan
 # Description:  A basic calculator application that handles common
-#               arithmatic, simple engineering equations, and business
+#               arithmetic, simple engineering equations, and business
 #               functions.
 # ===========================================================================
 
@@ -23,6 +23,32 @@
 #   2. Work Item
 #   3. Work Item
 # ===========================================================================
+
+
+# ===========================================================================
+# SECTION 0: HELPER FUNCTIONS
+# ===========================================================================
+
+# Prompts the user for a number and returns it as a float. If the user
+# types 'exit', the function returns None. If the user enters an invalid
+# number, the function displays an error message and prompts for a new
+# number.
+def get_number(prompt):
+    full_prompt = prompt + " or type 'exit' to return to the menu: "
+
+    print()
+    entry = input(full_prompt)
+
+    while entry != "exit":
+        try:
+            return float(entry)
+        except ValueError:
+            print()
+            print("Invalid input. Please enter a number.")
+            print()
+            entry = input(full_prompt)
+
+    return None
 
 
 # ===========================================================================
@@ -108,46 +134,32 @@ def cone_volume():
 # the result rounded to two decimal places.
 def meters_to_feet():
     feet_per_meter = 3.28084
-    done = False
+    prompt = "Enter a length in meters"
 
-    while not done:
+    meters = get_number(prompt)
+
+    while meters is not None:
+        feet = meters * feet_per_meter
         print()
-        entry = input("Enter a length in meters, or type 'exit' to return to the menu: ")
+        print(str(meters) + " meter(s) is equal to " + str(round(feet, 2)) + " feet.")
 
-        if entry == "exit":
-            done = True
-        else:
-            try:
-                meters = float(entry)
-                feet = meters * feet_per_meter
-                print()
-                print(str(meters) + " meter(s) is equal to " + str(round(feet, 2)) + " feet.")
-            except ValueError:
-                print()
-                print("Invalid input. Please enter a number.")
+        meters = get_number(prompt)
 
 
 # Prompts the user for a length in meters, converts it to feet, and displays
 # the result rounded to two decimal places.
 def kilograms_to_pounds():
     pounds_per_kilogram = 2.20462
-    done = False
+    prompt = "Enter a weight in kilograms"
 
-    while not done:
+    kilograms = get_number(prompt)
+
+    while kilograms is not None:
+        pounds = kilograms * pounds_per_kilogram
         print()
-        entry = input("Enter a weight in kilograms, or type 'exit' to return to the menu: ")
+        print(str(kilograms) + " kilogram(s) is equal to " + str(round(pounds, 2)) + " pound(s).")
 
-        if entry == "exit":
-            done = True
-        else:
-            try:
-                kilograms = float(entry)
-                pounds = kilograms * pounds_per_kilogram
-                print()
-                print(str(kilograms) + " kilogram(s) is equal to " + str(round(pounds, 2)) + " pound(s).")
-            except ValueError:
-                print()
-                print("Invalid input. Please enter a number.")
+        kilograms = get_number(prompt)
 
 
 # ---- 2c. Engineering Menus ----
