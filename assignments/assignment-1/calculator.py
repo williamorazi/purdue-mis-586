@@ -17,7 +17,9 @@
 #   1. Implemented program scaffolding, including the menu and sub-menus for
 #      each calculator type (basic, engineering, and business).
 #   2. Implemented unit conversion functions for engineering calculations.
-#   3. Implemented the break-even point calculation for business calculations.
+#   3. Implemented the break-even point calculation for the business calculator.
+#   4. Implemented the triangle area and cone volume calculations for 
+#      the engineering calculator.
 #
 # Preston Nicol:
 #   1. Work Item
@@ -150,9 +152,38 @@ def cylinder_volume():
     print("Cylinder volume is not built yet.")
 
 
-# Later: prompt for radius and height, then display the cone's volume.
+# Prompts the user for the radius and height of a cone, calculates the volume,
+# and displays the result rounded to two decimal places.  If the user enters
+# a negative radius or height, the function displays an error message.
 def cone_volume():
-    print("Cone volume is not built yet.")
+    radius = get_number("Enter the cone's radius")
+    if radius is None:
+        return
+
+    height = get_number("Enter the cone's height")
+    if height is None:
+        return
+
+    volume = calculate_cone_volume(radius, height)
+
+    print()
+    if volume is None:
+        print("Invalid dimensions. The radius and height can't be negative.")
+    else:
+        print("The volume of the cone is " + str(volume) + " cubic units.")
+
+
+# Calculates the volume of a cone given the radius and height, using the
+# formula (1/3) x pi x radius^2 x height.  Returns None if either the radius
+# or height is negative.  Otherwise, returns the volume rounded to two
+# decimal places.
+def calculate_cone_volume(radius, height):
+    pi = 3.141592653589793
+
+    if radius < 0 or height < 0:
+        return None
+    else:
+        return round((1/3) * pi * radius ** 2 * height, 2)
 
 
 # ---- 2b. Unit Conversions ----
