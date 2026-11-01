@@ -17,6 +17,7 @@
 #   1. Implemented program scaffolding, including the menu and sub-menus for
 #      each calculator type (basic, engineering, and business).
 #   2. Implemented unit conversion functions for engineering calculations.
+#   3. Implemented the break-even point calculation for business calculations.
 #
 # Preston Nicol:
 #   1. Work Item
@@ -137,13 +138,10 @@ def meters_to_feet():
     prompt = "Enter a length in meters"
 
     meters = get_number(prompt)
+    feet = meters * feet_per_meter
 
-    while meters is not None:
-        feet = meters * feet_per_meter
-        print()
-        print(str(meters) + " meter(s) is equal to " + str(round(feet, 2)) + " feet.")
-
-        meters = get_number(prompt)
+    print()
+    print(str(meters) + " meter(s) is equal to " + str(round(feet, 2)) + " feet.")
 
 
 # Prompts the user for a length in meters, converts it to feet, and displays
@@ -153,13 +151,10 @@ def kilograms_to_pounds():
     prompt = "Enter a weight in kilograms"
 
     kilograms = get_number(prompt)
+    pounds = kilograms * pounds_per_kilogram
 
-    while kilograms is not None:
-        pounds = kilograms * pounds_per_kilogram
-        print()
-        print(str(kilograms) + " kilogram(s) is equal to " + str(round(pounds, 2)) + " pound(s).")
-
-        kilograms = get_number(prompt)
+    print()
+    print(str(kilograms) + " kilogram(s) is equal to " + str(round(pounds, 2)) + " pound(s).")
 
 
 # ---- 2c. Engineering Menus ----
@@ -239,6 +234,7 @@ def engineering_menu():
         elif choice != "0":
             print("Invalid choice. Please enter 0, 1, or 2.")
 
+
 # ===========================================================================
 # SECTION 3: BUSINESS CALCULATIONS
 # ===========================================================================
@@ -247,22 +243,68 @@ def engineering_menu():
 # periods, then display the compound interest earned.
 def compound_interest():
     print("Compound interest is not built yet.")
- 
- 
-# Later: prompt for fixed costs, sales price per unit, and variable
-# cost per unit, then display the break-even point in units. Must
-# handle a price that equals the variable cost (division by zero).
+
+
+# Promps the user for the fixed costs, sales price per unit, and variable cost
+# per unit, then prints the break-even point in units, rounded to the next whole
+# unit.  If the sales price is less than or equal to the variable cost, the
+# function prints a message indicating that there is no break-even point.
 def break_even_point():
-    print("Break-even point is not built yet.")
- 
- 
+    fixed_costs = get_number("Enter the total fixed costs")
+
+    if fixed_costs is None:
+        return
+
+    price = get_number("Enter the sales price per unit")
+
+    if price is None:
+        return
+
+    variable_cost = get_number("Enter the variable cost per unit")
+
+    if variable_cost is None:
+        return
+
+    units = calculate_break_even(fixed_costs, price, variable_cost)
+
+    print()
+    if units is None:
+        print("No break-even point.  The sales price must be greater than the variable cost.")
+    else:
+        print ("The break-even point is " + str(units) + " units.")
+
+
+# Calculates the break-even point in units, given the fixed costs, sale price
+# per unit, and variable cost per unit.  Returns None if the sale price
+# equals the variable cost (division by zero) or if the fixed costs are
+# negative (will never break even).  Otherwise, returns the break-even point
+# rounded up to the next whole unit.
+def calculate_break_even(fixed_costs, sale_price, variable_cost):
+    contribution_margin = sale_price - variable_cost
+
+    if contribution_margin < 0:
+        return None
+
+    try:
+        units = fixed_costs / contribution_margin
+    except ZeroDivisionError:
+        return None
+
+    whole_units = int(units)
+
+    if units - whole_units > 0:
+        whole_units += 1
+
+    return whole_units
+
+
 # Menu for choosing a business calculation.
 def business_menu():
     choice = ""
     while choice != "0":
         print()
         print("===== Business Calculations =====")
-        print("  1. Compound interest")
+        print("  1. Compound Interest")
         print("  2. Break-Even Point")
         print("  0. Back to Main Menu")
         print("=================================")
@@ -276,6 +318,7 @@ def business_menu():
         elif choice != "0":
             print()
             print("Invalid choice. Please enter 0, 1, or 2.")
+
 
 # ===========================================================================
 # SECTION 4: MAIN MENU
@@ -310,6 +353,7 @@ def main_menu():
         else:
             print()
             print("Invalid choice. Please enter 0, 1, 2, or 3.")
+
 
 # Start the calculator program.
 main_menu()
