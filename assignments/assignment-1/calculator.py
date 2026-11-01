@@ -99,9 +99,35 @@ def basic_calculator_menu():
 
 # ---- 2a. Shape Area/Volume ----
 
-# Later: prompt for base and height, then display the triangle's area.
+# Prompts the user for the base and height of a triangle, calculates the area,
+# and displays the result rounded to two decimal places.  If the user enters
+# a negative base or height, the function displays an error message.
 def triangle_area():
-    print("Triangle area is not built yet.")
+    base = get_number("Enter the triangle's base")
+    if base is None:
+        return
+
+    height = get_number("Enter the triangle's height")
+    if height is None:
+        return
+
+    triangle_area = calculate_triangle_area(base, height)
+
+    print()
+    if triangle_area is None:
+        print("Invalid dimensions. The base and height can't be negative.")
+    else:
+        print("The area of the triangle is " + str(triangle_area) + " square units.")
+
+
+# Calculates the area of a triangle given the base and height.  Returns None if
+# either the base or height is negative.  Otherwise, returns the area rounded
+# to two decimal places.
+def calculate_triangle_area(base, height):
+    if base < 0 or height < 0:
+        return None
+    else:
+        return round(0.5 * base * height, 2)
 
 
 # Later: prompt for length and width, then display the rectangle's area.
