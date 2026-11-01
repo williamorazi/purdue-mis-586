@@ -16,10 +16,10 @@
 # William Orazi:
 #   1. Implemented program scaffolding, including the menu and sub-menus for
 #      each calculator type (basic, engineering, and business).
-#   2. Implemented unit conversion functions for engineering calculations.
-#   3. Implemented the break-even point calculation for the business calculator.
-#   4. Implemented the triangle area and cone volume calculations for 
-#      the engineering calculator.
+#   2. Implemented the basic calculator functionality.
+#   3. Implemented unit conversion functions, and the triangle area and cone
+#      volume calculations for engineering calculator.
+#   4. Implemented the break-even point calculation for the business calculator.
 #
 # Preston Nicol:
 #   1. Work Item
@@ -63,7 +63,40 @@ def get_number(prompt):
 # Later: prompt for two numbers, perform the operation, display the
 # result, and handle division by zero and invalid number input.
 def basic_operation(operation):
-    print("The " + operation + " operation is not built yet.")
+
+    first_number = get_number("Enter the first number")
+    if first_number is None:
+        return
+
+    second_number = get_number("Enter the second number")
+    if second_number is None:
+        return
+
+    result = calculate_basic_operation(first_number, second_number, operation)
+
+    print()
+    if result is not None:
+        print(str(first_number) + " " + operation + " " + str(second_number) + " = " + str(result))
+    else:
+        print("Can't divide by zero.  Please enter a second number other than zero.")
+
+
+def calculate_basic_operation(first_number, second_number, operation):
+    try:
+        if operation == "+":
+            return first_number + second_number
+        elif operation == "-":
+            return first_number - second_number
+        elif operation == "*":
+            return first_number * second_number
+        elif operation == "/":
+            return first_number / second_number
+        elif operation == "mod":
+            return first_number % second_number
+        elif operation == "^":
+            return first_number ** second_number
+    except ZeroDivisionError:
+        return None
 
 
 # Menu for the basic calculator.  A user can select one of six menu options,
@@ -82,9 +115,10 @@ def basic_calculator_menu():
         print("  0    Back to Main Menu")
         print("=================================")
         print()
+
         operation = input("Enter an operation symbol: ")
 
-        # True when the user typed one of the six supported symbols
+        # Validate the user's choice.
         is_valid_operation = (operation == "+" or operation == "-" or
                               operation == "*" or operation == "/" or
                               operation == "mod" or operation == "^")
@@ -92,6 +126,7 @@ def basic_calculator_menu():
         if is_valid_operation:
             basic_operation(operation)
         elif operation != "0":
+            print()
             print("Invalid choice. Please enter +, -, *, /, mod, ^, or 0.")
 
 
