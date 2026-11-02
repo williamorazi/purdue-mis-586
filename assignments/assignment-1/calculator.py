@@ -22,9 +22,13 @@
 #   4. Implemented the break-even point calculation for the business calculator.
 #
 # Preston Nicol:
-#   1. Work Item
-#   2. Work Item
-#   3. Work Item
+#   1. Engineering Calculator
+#        Area of a rectangle
+#        Area of a circle
+#        Volume of a cube
+#        Volume of a cylinder
+#   2. Business Calculator
+#        Compound interest calculation
 # ===========================================================================
 
 
@@ -54,14 +58,20 @@ def get_number(prompt):
     return None
 
 
+# Returns the value of pi to 15 decimal places.
+def get_pi():
+    return 3.141592653589793
+
+
 # ===========================================================================
 # SECTION 1: BASIC CALCULATOR
 # ===========================================================================
 
-# Placeholder for the six basic operations.
-# Parameter: operation is the symbol the user chose (+, -, *, /, mod, ^)
-# Later: prompt for two numbers, perform the operation, display the
-# result, and handle division by zero and invalid number input.
+# Prompts the user for two numbers, performs the specified operation, and
+# displays the result.  If the user enters 'exit' for either number, the
+# function returns to the basic calculator menu.  If the user attempts to
+# divide by zero, the function displays an error message and returns to the
+# basic calculator menu.
 def basic_operation(operation):
 
     first_number = get_number("Enter the first number")
@@ -81,20 +91,25 @@ def basic_operation(operation):
         print("Can't divide by zero.  Please enter a second number other than zero.")
 
 
+# Calculates the result of a basic arithmetic operation on two numbers.  If 
+# the user attempts to divide by zero, the function returns None.  Otherwise,
+# it returns the result of the operation rounded to two decimal places.
 def calculate_basic_operation(first_number, second_number, operation):
     try:
         if operation == "+":
-            return first_number + second_number
+            result = first_number + second_number
         elif operation == "-":
-            return first_number - second_number
+            result = first_number - second_number
         elif operation == "*":
-            return first_number * second_number
+            result = first_number * second_number
         elif operation == "/":
-            return first_number / second_number
+            result = first_number / second_number
         elif operation == "mod":
-            return first_number % second_number
+            result = first_number % second_number
         elif operation == "^":
-            return first_number ** second_number
+            result = first_number ** second_number
+
+        return round(result, 2)
     except ZeroDivisionError:
         return None
 
@@ -148,13 +163,13 @@ def triangle_area():
     if height is None:
         return
 
-    triangle_area = calculate_triangle_area(base, height)
+    area = calculate_triangle_area(base, height)
 
     print()
-    if triangle_area is None:
+    if area is None:
         print("Invalid dimensions. The base and height can't be negative.")
     else:
-        print("The area of the triangle is " + str(triangle_area) + " square units.")
+        print("The area of the triangle is " + str(area) + " square units.")
 
 
 # Calculates the area of a triangle given the base and height.  Returns None if
@@ -167,24 +182,121 @@ def calculate_triangle_area(base, height):
         return round(0.5 * base * height, 2)
 
 
-# Later: prompt for length and width, then display the rectangle's area.
+# Prompts the user for the width and height of a rectangle, calculates the
+# area, and displays the result rounded to two decimal places.  If the user
+# enters a negative width or height, the function displays an error message.
 def rectangle_area():
-    print("Rectangle area is not built yet.")
+    width = get_number("Enter the rectangle's width")
+    if width is None:
+        return
+
+    height = get_number("Enter the rectangle's height")
+    if height is None:
+        return
+
+    area = calculate_rectangle_area(width, height)
+
+    print()
+    if area is None:
+        print("Invalid dimensions. The width and height can't be negative.")
+    else:
+        print("The area of the rectangle is " + str(area) + " square units.")
 
 
-# Later: prompt for the radius, then display the circle's area.
+# Calculates the area of a rectangle given the width and height, using the
+# formula width x height.  Returns None if either the width or height is
+# negative.  Otherwise, returns the area rounded to two decimal places.
+def calculate_rectangle_area(width, height) :
+    if width < 0 or height < 0:
+            return None
+    else:
+        return round (width * height, 2)
+
+
+# Prompts the user for the radius of a circle, calculates the area, and
+# displays the result rounded to two decimal places.  If the user enters a
+# negative radius, the function displays an error message.
 def circle_area():
-    print("Circle area is not built yet.")
+    radius = get_number("Enter the circle's radius")
+    if radius is None:
+        return
+
+    area = calculate_circle_area(radius)
+
+    print()
+    if area is None:
+        print("Invalid dimensions. The radius can't be negative.")
+    else:
+        print("The area of the circle is " + str(area) + " square units.")
 
 
-# Later: prompt for the side length, then display the cube's volume.
+# Calculates the area of a circle given the radius, using the formula
+# pi x radius^2.  Returns None if the radius is negative.  Otherwise,
+# returns the area rounded to two decimal places.
+def calculate_circle_area(radius) :
+    if radius < 0:
+            return None
+    else:
+        return round (get_pi() * radius ** 2, 2)
+
+
+# Prompts the user for the side length of a cube, calculates the volume, and
+# displays the result rounded to two decimal places.  If the user enters a
+# negative side length, the function displays an error message.
 def cube_volume():
-    print("Cube volume is not built yet.")
+    side_length = get_number("Enter the cube's side length")
+    if side_length is None:
+        return
+
+    volume = calculate_cube_volume(side_length)
+
+    print()
+    if volume is None:
+        print("Invalid dimensions. The side length can't be negative.")
+    else:
+        print("The volume of the cube is " + str(volume) + " square units.")
 
 
-# Later: prompt for radius and height, then display the cylinder's volume.
+# Calculates the volume of a cube given the side length, using the formula
+# side length^3.  Returns None if the side length is negative.  Otherwise,
+# returns the volume rounded to two decimal places.
+def calculate_cube_volume(side_length) :
+    if side_length < 0:
+            return None
+    else:
+        return round (side_length ** 3, 2)
+
+
+# Prompts the user for the radius and height of a cylinder, calculates the
+# volume, and displays the result rounded to two decimal places.  If the user
+# enters a negative radius or height, the function displays an error message.
 def cylinder_volume():
-    print("Cylinder volume is not built yet.")
+    radius = get_number("Enter the cylinder's radius")
+    if radius is None:
+        return
+        
+    height = get_number("Enter the cylinder's height")
+    if height is None:
+        return
+
+    volume = calculate_cylinder_volume(radius, height)
+
+    print()
+    if volume is None:
+        print("Invalid dimensions. The radius can't be negative.")
+    else:
+        print("The volume of the cylinder is " + str(volume) + " square units.")
+
+
+# Calculates the volume of a cylinder given the radius and height, using the
+# formula pi x radius^2 x height.  Returns None if either the radius or
+# height is negative.  Otherwise, returns the volume rounded to two decimal
+# places.
+def calculate_cylinder_volume(radius, height) :
+    if radius < 0:
+        return None
+    else:
+        return round (get_pi() * height * radius ** 2, 2)
 
 
 # Prompts the user for the radius and height of a cone, calculates the volume,
@@ -192,10 +304,12 @@ def cylinder_volume():
 # a negative radius or height, the function displays an error message.
 def cone_volume():
     radius = get_number("Enter the cone's radius")
+
     if radius is None:
         return
 
     height = get_number("Enter the cone's height")
+
     if height is None:
         return
 
@@ -213,12 +327,10 @@ def cone_volume():
 # or height is negative.  Otherwise, returns the volume rounded to two
 # decimal places.
 def calculate_cone_volume(radius, height):
-    pi = 3.141592653589793
-
     if radius < 0 or height < 0:
         return None
     else:
-        return round((1/3) * pi * radius ** 2 * height, 2)
+        return round((1/3) * get_pi() * radius ** 2 * height, 2)
 
 
 # ---- 2b. Unit Conversions ----
@@ -230,19 +342,27 @@ def meters_to_feet():
     prompt = "Enter a length in meters"
 
     meters = get_number(prompt)
+
+    if meters is None:
+        return
+
     feet = meters * feet_per_meter
 
     print()
     print(str(meters) + " meter(s) is equal to " + str(round(feet, 2)) + " feet.")
 
 
-# Prompts the user for a length in meters, converts it to feet, and displays
-# the result rounded to two decimal places.
+# Prompts the user for a weight in kilograms, converts it to pounds, and
+# displays the result rounded to two decimal places.
 def kilograms_to_pounds():
     pounds_per_kilogram = 2.20462
     prompt = "Enter a weight in kilograms"
 
     kilograms = get_number(prompt)
+
+    if kilograms is None:
+        return
+
     pounds = kilograms * pounds_per_kilogram
 
     print()
@@ -330,14 +450,57 @@ def engineering_menu():
 # ===========================================================================
 # SECTION 3: BUSINESS CALCULATIONS
 # ===========================================================================
- 
-# Later: prompt for principal, annual interest rate, and number of
-# periods, then display the compound interest earned.
+
+
+# Calculates the ending balance of a principal amount that earns compound
+# interest, using the formula:
+#   principal x (1 + rate / times per year)^(times per year x years)
+# The annual rate is a percentage (for example, 5 for 5%) and is converted
+# to a decimal first.  Returns the ending balance, not rounded.
+def calculate_compound_interest(principal, annual_rate, times_per_year, years):
+    rate = annual_rate / 100
+    balance = principal * (1 + rate / times_per_year) ** (times_per_year * years)
+    return balance
+
+
+# Prompts the user for the starting amount, annual interest rate (as a
+# percentage), number of times interest is compounded per year, and number
+# of years, then displays the ending balance and total interest earned in
+# dollars.  If the number of times compounded per year is zero or negative,
+# the function displays an error message.
 def compound_interest():
-    print("Compound interest is not built yet.")
+    principal = get_number("Enter the starting amount")
+
+    if principal is None:
+        return
+
+    annual_rate = get_number("Enter the annual interest rate (%)")
+
+    if annual_rate is None:
+        return
+
+    times_per_year = get_number("Enter the number of times interest is compounded per year")
+
+    if times_per_year is None:
+        return
+
+    years = get_number("Enter the number of years")
+
+    if years is None:
+        return
+
+    print()
+    if times_per_year <= 0:
+        print("Invalid input.  The number of times compounded per year must be greater than zero.")
+    else:
+        balance = calculate_compound_interest(principal, annual_rate, times_per_year, years)
+        interest = balance - principal
+
+        print("The ending balance is $" + format(balance, ",.2f") + ".")
+        print("The total interest earned is $" + format(interest, ",.2f") + ".")
 
 
-# Promps the user for the fixed costs, sales price per unit, and variable cost
+# Prompts the user for the fixed costs, sales price per unit, and variable cost
 # per unit, then prints the break-even point in units, rounded to the next whole
 # unit.  If the sales price is less than or equal to the variable cost, the
 # function prints a message indicating that there is no break-even point.
@@ -367,10 +530,9 @@ def break_even_point():
 
 
 # Calculates the break-even point in units, given the fixed costs, sale price
-# per unit, and variable cost per unit.  Returns None if the sale price
-# equals the variable cost (division by zero) or if the fixed costs are
-# negative (will never break even).  Otherwise, returns the break-even point
-# rounded up to the next whole unit.
+# per unit, and variable cost per unit.  Returns None if the sale price is
+# less than or equal to the variable cost (will never break even).
+# Otherwise, returns the break-even point rounded up to the next whole unit.
 def calculate_break_even(fixed_costs, sale_price, variable_cost):
     contribution_margin = sale_price - variable_cost
 
