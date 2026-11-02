@@ -12,13 +12,13 @@
 
 # ===========================================================================
 # Breakdown of Work:
-# 
+#
 # William Orazi:
 #   1. Implemented program scaffolding, including the menu and sub-menus for
 #      each calculator type (basic, engineering, and business).
 #   2. Implemented the basic calculator functionality.
 #   3. Implemented unit conversion functions, and the triangle area and cone
-#      volume calculations for engineering calculator.
+#      volume calculations for the engineering calculator.
 #   4. Implemented the break-even point calculation for the business calculator.
 #
 # Preston Nicol:
@@ -73,7 +73,6 @@ def get_pi():
 # divide by zero, the function displays an error message and returns to the
 # basic calculator menu.
 def basic_operation(operation):
-
     first_number = get_number("Enter the first number")
     if first_number is None:
         return
@@ -87,11 +86,13 @@ def basic_operation(operation):
     print()
     if result is not None:
         print(str(first_number) + " " + operation + " " + str(second_number) + " = " + str(result))
+    elif operation == "^":
+        print("That power can't be calculated or very large results are out of range.")
     else:
         print("Can't divide by zero.  Please enter a second number other than zero.")
 
 
-# Calculates the result of a basic arithmetic operation on two numbers.  If 
+# Calculates the result of a basic arithmetic operation on two numbers.  If
 # the user attempts to divide by zero, the function returns None.  Otherwise,
 # it returns the result of the operation rounded to two decimal places.
 def calculate_basic_operation(first_number, second_number, operation):
@@ -111,6 +112,8 @@ def calculate_basic_operation(first_number, second_number, operation):
 
         return round(result, 2)
     except ZeroDivisionError:
+        return None
+    except OverflowError:
         return None
 
 
@@ -206,11 +209,11 @@ def rectangle_area():
 # Calculates the area of a rectangle given the width and height, using the
 # formula width x height.  Returns None if either the width or height is
 # negative.  Otherwise, returns the area rounded to two decimal places.
-def calculate_rectangle_area(width, height) :
+def calculate_rectangle_area(width, height):
     if width < 0 or height < 0:
-            return None
+        return None
     else:
-        return round (width * height, 2)
+        return round(width * height, 2)
 
 
 # Prompts the user for the radius of a circle, calculates the area, and
@@ -233,11 +236,11 @@ def circle_area():
 # Calculates the area of a circle given the radius, using the formula
 # pi x radius^2.  Returns None if the radius is negative.  Otherwise,
 # returns the area rounded to two decimal places.
-def calculate_circle_area(radius) :
+def calculate_circle_area(radius):
     if radius < 0:
-            return None
+        return None
     else:
-        return round (get_pi() * radius ** 2, 2)
+        return round(get_pi() * radius ** 2, 2)
 
 
 # Prompts the user for the side length of a cube, calculates the volume, and
@@ -254,17 +257,17 @@ def cube_volume():
     if volume is None:
         print("Invalid dimensions. The side length can't be negative.")
     else:
-        print("The volume of the cube is " + str(volume) + " square units.")
+        print("The volume of the cube is " + str(volume) + " cubic units.")
 
 
 # Calculates the volume of a cube given the side length, using the formula
 # side length^3.  Returns None if the side length is negative.  Otherwise,
 # returns the volume rounded to two decimal places.
-def calculate_cube_volume(side_length) :
+def calculate_cube_volume(side_length):
     if side_length < 0:
-            return None
+        return None
     else:
-        return round (side_length ** 3, 2)
+        return round(side_length ** 3, 2)
 
 
 # Prompts the user for the radius and height of a cylinder, calculates the
@@ -274,7 +277,7 @@ def cylinder_volume():
     radius = get_number("Enter the cylinder's radius")
     if radius is None:
         return
-        
+
     height = get_number("Enter the cylinder's height")
     if height is None:
         return
@@ -283,20 +286,20 @@ def cylinder_volume():
 
     print()
     if volume is None:
-        print("Invalid dimensions. The radius can't be negative.")
+        print("Invalid dimensions. The radius and height can't be negative.")
     else:
-        print("The volume of the cylinder is " + str(volume) + " square units.")
+        print("The volume of the cylinder is " + str(volume) + " cubic units.")
 
 
 # Calculates the volume of a cylinder given the radius and height, using the
 # formula pi x radius^2 x height.  Returns None if either the radius or
 # height is negative.  Otherwise, returns the volume rounded to two decimal
 # places.
-def calculate_cylinder_volume(radius, height) :
-    if radius < 0:
+def calculate_cylinder_volume(radius, height):
+    if radius < 0 or height < 0:
         return None
     else:
-        return round (get_pi() * height * radius ** 2, 2)
+        return round(get_pi() * height * radius ** 2, 2)
 
 
 # Prompts the user for the radius and height of a cone, calculates the volume,
@@ -387,7 +390,7 @@ def shapes_menu():
         print("=========================================")
         print()
         choice = input("Enter your choice: ")
- 
+
         if choice == "1":
             triangle_area()
         elif choice == "2":
@@ -401,6 +404,7 @@ def shapes_menu():
         elif choice == "6":
             cone_volume()
         elif choice != "0":
+            print()
             print("Invalid choice. Please enter a number from 0 to 6.")
 
 
@@ -417,12 +421,13 @@ def unit_conversion_menu():
         print("=================================")
         print()
         choice = input("Enter your choice: ")
- 
+
         if choice == "1":
             meters_to_feet()
         elif choice == "2":
             kilograms_to_pounds()
         elif choice != "0":
+            print()
             print("Unsupported conversion. Please enter 0, 1, or 2.")
 
 
@@ -438,12 +443,13 @@ def engineering_menu():
         print("==================================")
         print()
         choice = input("Enter your choice: ")
- 
+
         if choice == "1":
             shapes_menu()
         elif choice == "2":
             unit_conversion_menu()
         elif choice != "0":
+            print()
             print("Invalid choice. Please enter 0, 1, or 2.")
 
 
@@ -451,53 +457,53 @@ def engineering_menu():
 # SECTION 3: BUSINESS CALCULATIONS
 # ===========================================================================
 
-
-# Calculates the ending balance of a principal amount that earns compound
-# interest, using the formula:
-#   principal x (1 + rate / times per year)^(times per year x years)
-# The annual rate is a percentage (for example, 5 for 5%) and is converted
-# to a decimal first.  Returns the ending balance, not rounded.
-def calculate_compound_interest(principal, annual_rate, times_per_year, years):
-    rate = annual_rate / 100
-    balance = principal * (1 + rate / times_per_year) ** (times_per_year * years)
-    return balance
-
-
-# Prompts the user for the starting amount, annual interest rate (as a
-# percentage), number of times interest is compounded per year, and number
-# of years, then displays the ending balance and total interest earned in
-# dollars.  If the number of times compounded per year is zero or negative,
-# the function displays an error message.
+# Prompts the user for the principal, annual interest rate (as a
+# percentage), and number of periods, then displays the compound interest
+# earned and the ending balance.  If the user enters a negative value, or
+# the result is too large to calculate, the function displays an error
+# message.
 def compound_interest():
-    principal = get_number("Enter the starting amount")
+    principal = get_number("Enter the principal amount")
 
     if principal is None:
         return
 
-    annual_rate = get_number("Enter the annual interest rate (%)")
+    annual_rate = get_number("Enter the annual interest rate as a percent (for example, 5 for 5%)")
 
     if annual_rate is None:
         return
 
-    times_per_year = get_number("Enter the number of times interest is compounded per year")
+    periods = get_number("Enter the number of periods (years)")
 
-    if times_per_year is None:
+    if periods is None:
         return
 
-    years = get_number("Enter the number of years")
-
-    if years is None:
-        return
+    interest = calculate_compound_interest(principal, annual_rate, periods)
 
     print()
-    if times_per_year <= 0:
-        print("Invalid input.  The number of times compounded per year must be greater than zero.")
+    if interest is None:
+        print("Can't calculate compound interest.  The values can't be negative, and very large results are out of range.")
     else:
-        balance = calculate_compound_interest(principal, annual_rate, times_per_year, years)
-        interest = balance - principal
+        print("The compound interest earned is $" + str(interest) + ".")
+        print("The ending balance is $" + str(round(principal + interest, 2)) + ".")
 
-        print("The ending balance is $" + format(balance, ",.2f") + ".")
-        print("The total interest earned is $" + format(interest, ",.2f") + ".")
+
+# Calculates the compound interest earned on a principal amount, using the
+# formula (P x (1 + i)^n) - P, where P is the principal, i is the annual
+# interest rate, and n is the number of periods.  The rate is a percentage
+# (for example, 5 for 5%) and is converted to a decimal first.  Returns None
+# if any value is negative or the result is too large to calculate.
+# Otherwise, returns the interest rounded to two decimal places.
+def calculate_compound_interest(principal, annual_rate, periods):
+    if principal < 0 or annual_rate < 0 or periods < 0:
+        return None
+
+    rate = annual_rate / 100
+
+    try:
+        return round(principal * (1 + rate) ** periods - principal, 2)
+    except OverflowError:
+        return None
 
 
 # Prompts the user for the fixed costs, sales price per unit, and variable cost
@@ -524,19 +530,20 @@ def break_even_point():
 
     print()
     if units is None:
-        print("No break-even point.  The sales price must be greater than the variable cost.")
+        print("No break-even point.  Fixed costs can't be negative, and the sales price must be greater than the variable cost.")
     else:
-        print ("The break-even point is " + str(units) + " units.")
+        print("The break-even point is " + str(units) + " units.")
 
 
 # Calculates the break-even point in units, given the fixed costs, sale price
-# per unit, and variable cost per unit.  Returns None if the sale price is
-# less than or equal to the variable cost (will never break even).
-# Otherwise, returns the break-even point rounded up to the next whole unit.
+# per unit, and variable cost per unit.  Returns None if the fixed costs are
+# negative, or if the sale price is less than or equal to the variable cost 
+# (will never break even).  Otherwise, returns the break-even point rounded up
+# to the next whole unit.
 def calculate_break_even(fixed_costs, sale_price, variable_cost):
     contribution_margin = sale_price - variable_cost
 
-    if contribution_margin < 0:
+    if fixed_costs < 0 or contribution_margin < 0:
         return None
 
     try:
@@ -564,7 +571,7 @@ def business_menu():
         print("=================================")
         print()
         choice = input("Enter your choice: ")
- 
+
         if choice == "1":
             compound_interest()
         elif choice == "2":
@@ -578,6 +585,8 @@ def business_menu():
 # SECTION 4: MAIN MENU
 # ===========================================================================
 
+# Top-level menu. Sends the user to a calculator type and keeps running until
+# they choose to exit the program.
 def main_menu():
     choice = ""
     while choice != "0":
