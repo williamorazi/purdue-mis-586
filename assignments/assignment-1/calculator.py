@@ -92,9 +92,10 @@ def basic_operation(operation):
         print("Can't divide by zero.  Please enter a second number other than zero.")
 
 
-# Calculates the result of a basic arithmetic operation on two numbers.  If
-# the user attempts to divide by zero, the function returns None.  Otherwise,
-# it returns the result of the operation rounded to two decimal places.
+# Calculates the result of a basic arithmetic operation on two numbers.
+# Returns None if the result can't be calculated: dividing by zero, or a
+# power that's too large or doesn't produce a real number.  Otherwise,
+# returns the result of the operation rounded to two decimal places.
 def calculate_basic_operation(first_number, second_number, operation):
     try:
         if operation == "+":
