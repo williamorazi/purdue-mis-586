@@ -1,11 +1,8 @@
 # Lab 2: Sales and Inventory Management System
-# Group 3 Members: William Christopher Orazi & Christopher Kuhl
+# Group 3 Members: William Orazi & Christopher Kuhl
 
-# datetime gives us the date and time of each sale.
-# json lets us save our data to a file and load it back later.
 import datetime
 import json
-
 
 # ------------------------------------
 # Group 3's Product Catalog - Chris Kuhl
@@ -24,20 +21,19 @@ product_catalog = {
 # dictionary and added to this list when a sale is made.
 sales_history = []
 
-
 # ------------------------------------
 # Format Money Helper - William Orazi
-# One small function so every dollar amount is shown the same way,
-# always with two decimal places (149.9 shows as $149.90).
+# 
+# Provides a consistent way to display prices and totals with two decimal places.
 # ------------------------------------
-
 def format_money(amount):
-    total_cents = round(amount * 100)   # 149.9 becomes 14990
-    dollars = total_cents // 100        # floor division gives 149
-    cents = total_cents % 100           # modulus gives the remainder, 90
+    # Round the amount to the nearest cent and split into dollars and cents
+    total_cents = round(amount * 100)
+    dollars = total_cents // 100
+    cents = total_cents % 100
 
-    # Add a leading zero for 1 to 9 cents so 5 cents shows as .05
     if cents < 10:
+        # Add a leading zero for single-digit cents to ensure two decimal places
         return "$" + str(dollars) + ".0" + str(cents)
     else:
         return "$" + str(dollars) + "." + str(cents)
@@ -48,7 +44,6 @@ def format_money(amount):
 # Displays all products currently in the catalog.
 # (Price formatting added by William Orazi.)
 # ------------------------------------
-
 def view_catalog():
     print("\nGroup 3's Product Catalog")
     print("--------------------------")
@@ -68,7 +63,6 @@ def view_catalog():
 # Allows a user to update a product's price or stock quantity.
 # (Price check and .strip() added by William Orazi.)
 # ------------------------------------
-
 def update_product():
     # Display products before updating
     view_catalog()
@@ -125,23 +119,18 @@ def update_product():
 
 # ------------------------------------
 # Record Sale Function - William Orazi
-# Does the business work of a sale: calculates the total,
-# reduces stock, and saves a sale record to the sales history.
-#
-# No 'global' keyword is needed here. We change the contents of
-# product_catalog and sales_history, but we never reassign them.
+# 
+# Calculates the total for a sale, reduces stock, and adds the sale to the sales history.
 # ------------------------------------
-
 def record_sale(product_id, quantity):
-    # Total for this sale, rounded to cents
+    # Calculate the sale total and round to nearest cent
     total_amount = round(product_catalog[product_id]["Price"] * quantity, 2)
 
-    # Reduce the stock on hand
+    # Reduce the stock for the product sold
     product_catalog[product_id]["Stock"] -= quantity
 
-    # Build the sale record as a dictionary.
-    # Sale IDs start at S1001 and count up with each sale.
-    # The date is stored as text so it prints cleanly and can be saved to JSON.
+    # Create a sale record with a unique Sale ID, current date and time,
+    # product ID, quantity sold, and total amount    
     sale = {
         "Sale ID": "S" + str(1001 + len(sales_history)),
         "Date and Time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -158,16 +147,13 @@ def record_sale(product_id, quantity):
 
 # ------------------------------------
 # Make a Sale Function - William Orazi
-# Gets the product and quantity from the user, checks for
-# errors, then calls record_sale() to complete the sale.
+#
+# Lets the user select a product and quantity to sell, then records the sale.
 # ------------------------------------
-
 def make_sale():
-    # Show the catalog so the user can see IDs, prices, and stock
+    # Display the catalog so the user can see what products are available
     view_catalog()
 
-    # .strip() removes extra spaces and .upper() lets the user
-    # type either "p1" or "P1"
     product_id = input("Enter Product ID to sell: ").strip().upper()
 
     # Make sure the product exists
@@ -178,7 +164,7 @@ def make_sale():
     product_name = product_catalog[product_id]["Name"]
     stock = product_catalog[product_id]["Stock"]
 
-    # Nothing to sell if the product is out of stock
+    # Check if the product is out of stock
     if stock == 0:
         print("Sorry,", product_name, "is out of stock.")
         return
@@ -200,7 +186,7 @@ def make_sale():
         print("Not enough stock. Only", stock, "of", product_name, "available.")
         return
 
-    # Everything checks out, so complete the sale
+    # Record the sale and display the results
     sale = record_sale(product_id, quantity)
 
     print("\nSale completed!")
@@ -213,9 +199,10 @@ def make_sale():
 
 # ------------------------------------
 # View Sales History Function - William Orazi
-# Displays every sale in the order it was made.
+#
+# Displays all sales that have been made, including the sale ID, date and time,
+# product name, quantity sold, and total sale amount.
 # ------------------------------------
-
 def view_sales_history():
     print("\nGroup 3's Sales History")
     print("--------------------------")
@@ -225,7 +212,7 @@ def view_sales_history():
         return
 
     for sale in sales_history:
-        # The sale stores the Product ID, so we look up the name in the catalog
+        # Get the product name from the catalog using the product ID in the sale record
         product_name = product_catalog[sale["Product ID"]]["Name"]
 
         print("Sale ID:", sale["Sale ID"])
@@ -238,10 +225,10 @@ def view_sales_history():
 
 # ------------------------------------
 # View Sales Statistics Function - William Orazi
-# Shows total sales revenue, the best-selling product, and the
-# product with the highest revenue, then ranks products by revenue.
+#
+# Displays total revenue, best-selling product, highest-revenue product,
+# and a ranking of products by revenue.
 # ------------------------------------
-
 def view_sales_statistics():
     print("\nGroup 3's Sales Statistics")
     print("--------------------------")
@@ -250,11 +237,10 @@ def view_sales_statistics():
         print("No sales have been made yet.")
         return
 
-    # Total revenue across every sale
+    # Calculate total revenue from all sales
     total_revenue = sum([sale["Total Amount"] for sale in sales_history])
 
-    # Add up units sold and revenue for each product.
-    # .get(product_id, 0) starts a product at 0 the first time we see it.
+    # Create dictionaries to track total units sold and total revenue for each product
     units_by_product = {}
     revenue_by_product = {}
 
@@ -263,19 +249,17 @@ def view_sales_statistics():
         units_by_product[product_id] = units_by_product.get(product_id, 0) + sale["Quantity"]
         revenue_by_product[product_id] = revenue_by_product.get(product_id, 0) + sale["Total Amount"]
 
-    # Sort each dictionary by its values, highest first
+    # Sort the products by units sold and revenue to find the best-selling and highest-revenue products
     units_ranking = sorted(units_by_product.items(), key=lambda pair: pair[1], reverse=True)
     revenue_ranking = sorted(revenue_by_product.items(), key=lambda pair: pair[1], reverse=True)
 
-    # The first item in each ranking is the top product
+    # Get the best-selling product and highest-revenue product from the sorted lists
     best_seller_id, best_seller_units = units_ranking[0]
     top_revenue_id, top_revenue = revenue_ranking[0]
 
     print("Total Sales Revenue:", format_money(total_revenue))
-    print("Best-Selling Product:", product_catalog[best_seller_id]["Name"],
-          "-", best_seller_units, "units sold")
-    print("Highest-Revenue Product:", product_catalog[top_revenue_id]["Name"],
-          "-", format_money(top_revenue))
+    print("Best-Selling Product:", product_catalog[best_seller_id]["Name"], "-", best_seller_units, "units sold")
+    print("Highest-Revenue Product:", product_catalog[top_revenue_id]["Name"], "-", format_money(top_revenue))
 
     print("\nProduct Ranking by Revenue:")
     rank = 1
@@ -286,10 +270,10 @@ def view_sales_statistics():
 
 # ------------------------------------
 # Save and Load Functions - William Orazi
-# Saves the catalog and sales history together in one JSON file
-# so our data is still there the next time the program runs.
+#
+# Saves the product catalog and sales history to a JSON file when the program exits,
+# and loads the data from the file when the program starts.
 # ------------------------------------
-
 data_file = "group3_sims_data.json"
 
 
@@ -314,10 +298,9 @@ def load_data():
 
 # ------------------------------------
 # Load Saved Data - William Orazi
-# If we saved data last time, pick up where we left off.
-# Otherwise, keep the default catalog and an empty sales history.
+#
+# Loads the product catalog and sales history from the JSON file if it exists.
 # ------------------------------------
-
 saved_data = load_data()
 
 if len(saved_data) > 0:
@@ -331,7 +314,6 @@ if len(saved_data) > 0:
 # Repeats until the user chooses to exit the program.
 # (Sales statistics option and saving on exit added by William Orazi.)
 # ------------------------------------
-
 while True:
     print("\nMain Menu")
     print("1. View Group 3's Catalog")
