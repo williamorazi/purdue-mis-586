@@ -1,4 +1,4 @@
-#####################################################################################
+######################################################################################
 # Assignment:   Assignment 2: Sales and Inventory Management System
 # Date:         November 8, 2026
 # Course:       Purdue University, MIS 586
@@ -51,10 +51,10 @@ def format_money(amount):
 # ------------------------------------
 # View Catalog Function - Chris Kuhl
 # Displays all products currently in the catalog.
-# (Price formatting added by William Orazi.)
 # ------------------------------------
 def view_catalog():
-    print("\nProduct Catalog")
+    print()
+    print("Product Catalog")
     print("--------------------------")
 
     # Loop through the dictionary and display product details
@@ -193,7 +193,8 @@ def make_sale():
     # Record the sale and display the results
     sale = record_sale(product_id, quantity)
 
-    print("\nSale completed!")
+    print()
+    print("Sale completed!")
     print("Sale ID:", sale["Sale ID"])
     print("Product:", product_name)
     print("Quantity:", quantity)
@@ -275,11 +276,11 @@ def view_sales_statistics():
         rank += 1
 
 
-#------------------------------------
+# ------------------------------------
 # Save Data Function - William Orazi
 #
 # Saves the product catalog and sales history to a JSON file.
-#------------------------------------
+# ------------------------------------
 def save_data():
     program_data = {"catalog": product_catalog, "sales": sales_history}
 
@@ -289,11 +290,11 @@ def save_data():
     print("Data saved to", data_file)
 
 
-#------------------------------------
+# ------------------------------------
 # Load Data Function - William Orazi
 #
 # Loads the product catalog and sales history from a JSON file if it exists.
-#------------------------------------
+# ------------------------------------
 def load_data():
     try:
         with open(data_file, "r") as file:
@@ -322,8 +323,10 @@ if len(saved_data) > 0:
 # Repeats until the user chooses to exit the program.
 # ------------------------------------
 while True:
-    print("\nMain Menu")
-    print("1. View Product Catalog")
+    print()
+    print("Main Menu")
+    print("--------------------------")
+    print("1. View Catalog")
     print("2. Update a Product")
     print("3. Make a Sale")
     print("4. View Sales History")
