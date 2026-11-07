@@ -1,25 +1,34 @@
-# Lab 2: Sales and Inventory Management System
-# Group 3 Members: William Orazi & Christopher Kuhl
+#####################################################################################
+# Assignment:   Assignment 2: Sales and Inventory Management System
+# Date:         November 8, 2026
+# Course:       Purdue University, MIS 586
+# Student(s):   William Orazi, Christopher Kuhl
+# Instructor:   Dr. Shoaib Khan
+# Description:  This program implements a sales and inventory management system. It
+#               allows users to view a product catalog, update product information,
+#               make sales, view sales history, and view sales statistics. The
+#               program saves data to a JSON file upon exit and loads it upon startup.
+######################################################################################
 
 import datetime
 import json
 
-# ------------------------------------
-# Group 3's Product Catalog - Chris Kuhl
-# Stores product information using a dictionary.
-# ------------------------------------
-
+# Store product information using a dictionary
 product_catalog = {
     "P1": {"Name": "Laptop", "Price": 899.99, "Stock": 8},
     "P2": {"Name": "Keyboard", "Price": 49.99, "Stock": 20},
     "P3": {"Name": "Mouse", "Price": 24.99, "Stock": 35},
     "P4": {"Name": "Monitor", "Price": 199.99, "Stock": 12},
-    "P5": {"Name": "USB Drive", "Price": 14.99, "Stock": 50}
+    "P5": {"Name": "USB Drive", "Price": 14.99, "Stock": 50},
+    "P6": {"Name": "Printer", "Price": 89.49, "Stock": 12}
 }
 
-# This list stores our sales history. Each sale is saved as a
-# dictionary and added to this list when a sale is made.
+# List of sales transactions
 sales_history = []
+
+# JSON file to save and load product catalog and sales history
+data_file = "inventory-and-sales.json"
+
 
 # ------------------------------------
 # Format Money Helper - William Orazi
@@ -45,7 +54,7 @@ def format_money(amount):
 # (Price formatting added by William Orazi.)
 # ------------------------------------
 def view_catalog():
-    print("\nGroup 3's Product Catalog")
+    print("\nProduct Catalog")
     print("--------------------------")
 
     # Loop through the dictionary and display product details
@@ -61,17 +70,11 @@ def view_catalog():
 # ------------------------------------
 # Update Product Function - Chris Kuhl
 # Allows a user to update a product's price or stock quantity.
-# (Price check and .strip() added by William Orazi.)
 # ------------------------------------
 def update_product():
     # Display products before updating
     view_catalog()
 
-    # Ask the user which product to update. I added the .upper()
-    # to account for the user entering either uppercase
-    # or lowercase letters for the product id. The .strip()
-    # removes any extra spaces before or after it. Both help
-    # prevent errors from simple typing mistakes.
     product_id = input("Enter Product ID to update: ").strip().upper()
 
     # Make sure the product exists
@@ -79,7 +82,8 @@ def update_product():
         print("Product not found.")
         return
 
-    print("\n1. Update Price")
+    print()
+    print("1. Update Price")
     print("2. Update Stock")
 
     choice = input("Enter choice: ")
@@ -204,7 +208,8 @@ def make_sale():
 # product name, quantity sold, and total sale amount.
 # ------------------------------------
 def view_sales_history():
-    print("\nGroup 3's Sales History")
+    print()
+    print("Sales History")
     print("--------------------------")
 
     if len(sales_history) == 0:
@@ -230,7 +235,8 @@ def view_sales_history():
 # and a ranking of products by revenue.
 # ------------------------------------
 def view_sales_statistics():
-    print("\nGroup 3's Sales Statistics")
+    print()
+    print("Sales Statistics")
     print("--------------------------")
 
     if len(sales_history) == 0:
@@ -261,22 +267,19 @@ def view_sales_statistics():
     print("Best-Selling Product:", product_catalog[best_seller_id]["Name"], "-", best_seller_units, "units sold")
     print("Highest-Revenue Product:", product_catalog[top_revenue_id]["Name"], "-", format_money(top_revenue))
 
-    print("\nProduct Ranking by Revenue:")
+    print()
+    print("Product Ranking by Revenue:")
     rank = 1
     for product_id, revenue in revenue_ranking:
         print(str(rank) + ".", product_catalog[product_id]["Name"], "-", format_money(revenue))
         rank += 1
 
 
-# ------------------------------------
-# Save and Load Functions - William Orazi
+#------------------------------------
+# Save Data Function - William Orazi
 #
-# Saves the product catalog and sales history to a JSON file when the program exits,
-# and loads the data from the file when the program starts.
-# ------------------------------------
-data_file = "group3_sims_data.json"
-
-
+# Saves the product catalog and sales history to a JSON file.
+#------------------------------------
 def save_data():
     program_data = {"catalog": product_catalog, "sales": sales_history}
 
@@ -286,6 +289,11 @@ def save_data():
     print("Data saved to", data_file)
 
 
+#------------------------------------
+# Load Data Function - William Orazi
+#
+# Loads the product catalog and sales history from a JSON file if it exists.
+#------------------------------------
 def load_data():
     try:
         with open(data_file, "r") as file:
@@ -312,15 +320,14 @@ if len(saved_data) > 0:
 # ------------------------------------
 # Main Menu - Chris Kuhl
 # Repeats until the user chooses to exit the program.
-# (Sales statistics option and saving on exit added by William Orazi.)
 # ------------------------------------
 while True:
     print("\nMain Menu")
-    print("1. View Group 3's Catalog")
-    print("2. Make a Sale")
-    print("3. View Group 3's Sales History")
-    print("4. Update Product")
-    print("5. View Group 3's Sales Statistics")
+    print("1. View Product Catalog")
+    print("2. Update a Product")
+    print("3. Make a Sale")
+    print("4. View Sales History")
+    print("5. View Sales Statistics")
     print("6. Exit")
 
     choice = input("Enter your choice: ")
@@ -329,17 +336,17 @@ while True:
     if choice == "1":
         view_catalog()
 
-    # Sales function
+    # Update product information
     elif choice == "2":
+        update_product()
+
+    # Sales function
+    elif choice == "3":
         make_sale()
 
     # Sales history function
-    elif choice == "3":
-        view_sales_history()
-
-    # Update product information
     elif choice == "4":
-        update_product()
+        view_sales_history()
 
     # Sales statistics
     elif choice == "5":
@@ -348,7 +355,7 @@ while True:
     # Save our data, then exit the program
     elif choice == "6":
         save_data()
-        print("Exiting Group 3's Program")
+        print("Exiting.")
         break
 
     # Handle invalid menu choices
